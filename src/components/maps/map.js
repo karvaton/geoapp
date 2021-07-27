@@ -6,17 +6,8 @@ import L from "leaflet";
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.0/dist/images/";
 
 class Map extends Component {
-    constructor(props) {
-        super(props);
-
-        const {layerList} = props;
-        this.state = {
-            layerList,
-        }
-    }
-
     render() {
-        const {layerList} = this.state;
+        const layerList = this.props.layerList.reverse();
         const options = {
             version: "1.3.0",
             transparent: true,
@@ -24,7 +15,7 @@ class Map extends Component {
             format: "image/png",
             srs: "EPSG%3A900913",
         };
-        console.log(layerList);
+        // console.log(layerList);
         return (
             <MapContainer center={[52.32107, 33.73112]} zoom={11}>
                 <TileLayer

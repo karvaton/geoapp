@@ -29,13 +29,13 @@ class Container extends Component {
 
     componentDidMount() {
         const layerList = JSON.parse(LAYERS_DATA);
-        this.setState({ layerList });
+        this.setState(() => ({ layerList }));
     }
 
     render() {
         const list = this.state.layerList;
         const visibleLayers = list.filter(({layerId}) => this.state.visibleList.includes(layerId));
-        console.log(visibleLayers);
+        // console.log(visibleLayers);
 
         return (
             <div id="container">

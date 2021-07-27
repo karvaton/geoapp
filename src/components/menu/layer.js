@@ -18,7 +18,6 @@ class Layer extends Component {
     changeVis() {
         const visible = !this.state.visible;
         this.props.changeVisibility(this.state.layerId, visible);
-        // console.log(this.props.changeVisability);
         this.setState({ visible });
     }
 
@@ -27,8 +26,14 @@ class Layer extends Component {
     }
 
     setChanges(e) {
-        e.preventDefault();
-        this.setState({ editing: false });
+        if (e?.key === "Escape") {
+            this.setState({
+                title: this.props.layerInfo.title,
+                editing: false,
+            });
+        } else if (e?.key === "Enter" || e?.type === "blur") {
+            this.setState({ editing: false });
+        }
     }
     
     enableEditing(e) {
@@ -38,31 +43,62 @@ class Layer extends Component {
 
     render() {
         const { layerId, title, layerName, visible, editing } = this.state;
-        if (!editing)
-            return (
-                <li id={layerId}>
-                    <span onDoubleClick={event => this.enableEditing(event)}>
-                        {title || layerName}
-                    </span>
-                    <input
-                        type="checkbox"
-                        checked={visible}
-                        onChange={() => this.changeVis()}
-                    />
-                </li>
-            );
-        else
-            return (
-                <li id={layerId}>
+        return (
+            <li id={layerId}>
+                {!editing ? (
+                    [
+                        <span
+                            key="span"
+                            onDoubleClick={(event) => this.enableEditing(event)}
+                        >
+                            {title || layerName}
+                        </span>,
+                        <input
+                            key="input"
+                            type="checkbox"
+                            checked={visible}
+                            onChange={() => this.changeVis()}
+                        />,
+                    ]
+                ) : (
                     <input
                         type="text"
                         value={title}
                         onChange={(e) => this.nameChange(e.target.value)}
+                        onKeyDown={(event) => this.setChanges(event)}
+                        onBlur={(event) => this.setChanges(event)}
+                        autoFocus
                     />
-                    <button onClick={event => this.setChanges(event)}>OK</button>
-                </li>
-            );
+                )}
+            </li>
+        );
     }
 }
 
 export default Layer;
+
+
+       //     if (!editing)
+        //     return (
+        //         <li id={layerId}>
+        //             <span onDoubleClick={event => this.enableEditing(event)}>
+        //                 {title || layerName}
+        //             </span>
+        //             <input
+        //                 type="checkbox"
+        //                 checked={visible}
+        //                 onChange={() => this.changeVis()}
+        //             />
+        //         </li>
+        //     );
+        // else
+        //     return (
+        //         <li id={layerId}>
+        //             <input
+        //                 type="text"
+        //                 value={title}
+        //                 onChange={(e) => this.nameChange(e.target.value)}
+        //             />
+        //             <button onClick={event => this.setChanges(event)}>OK</button>
+        //         </li>
+        //     );
