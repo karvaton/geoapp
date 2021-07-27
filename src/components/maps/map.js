@@ -17,27 +17,30 @@ class Map extends Component {
 
     render() {
         const {layerList} = this.state;
-        const wmsParams = {
+        const options = {
             version: "1.3.0",
             transparent: true,
             tiled: true,
             format: "image/png",
             srs: "EPSG%3A900913",
         };
+        console.log(layerList);
         return (
-            <MapContainer center={[51.505, -0.09]} zoom={13}>
+            <MapContainer center={[52.32107, 33.73112]} zoom={11}>
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {layerList.map(({ id, workspace, layerName }) => {
-                    wmsParams.layers = workspace + ':' + layerName;
-                    console.log(wmsParams)
+                {layerList.map(({ layerId, workspace, layerName }, index) => {
+                    const layers = workspace + ":" + layerName;
+                    const wmsParams = {...options, layers};
+                    
                     return (
                         <WMSTileLayer
-                            key={id}
+                            key={layerId}
                             url="http://31.131.28.7:8080/geoserver/wms?"
                             params={wmsParams}
+                            zIndex={500 + index}
                         />
                     );
                 })}

@@ -17,6 +17,8 @@ class Layer extends Component {
 
     changeVis() {
         const visible = !this.state.visible;
+        this.props.changeVisibility(this.state.layerId, visible);
+        // console.log(this.props.changeVisability);
         this.setState({ visible });
     }
 

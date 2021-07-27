@@ -9,7 +9,22 @@ class Container extends Component {
 
         this.state = {
             layerList: [],
+            visibleList: []
         };
+        this.setVisibility = this.setVisibility.bind(this);
+    }
+
+    setVisibility(id, status) {
+        const {visibleList} = this.state;
+
+        if (status) {
+            visibleList.push(id);
+        } else {
+            const index = visibleList.indexOf(id);
+            visibleList.splice(index, 1);
+        }
+
+        this.setState({ visibleList });
     }
 
     componentDidMount() {
@@ -19,11 +34,14 @@ class Container extends Component {
 
     render() {
         const list = this.state.layerList;
+        const visibleLayers = list.filter(({layerId}) => this.state.visibleList.includes(layerId));
+        console.log(visibleLayers);
+
         return (
             <div id="container">
-                <Menu list={list} />
+                <Menu list={list} visibilityHandler={this.setVisibility} />
                 <div id="map">
-                    <Map layerList={list} />
+                    <Map layerList={visibleLayers} />
                 </div>
             </div>
         );

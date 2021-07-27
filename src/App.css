@@ -45,8 +45,9 @@
 }
 
 #menu {
-    width: 300px;
+    width: 299px;
     height: 100%;
+    border-right: solid 1px #b8b8b8;
 }
 
 #map {
